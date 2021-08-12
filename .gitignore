@@ -1,0 +1,8 @@
+.DS_Store
+.env
+SecBuzzerESM/envimage
+__pycache__/
+*.py[cod]
+*$py.class
+*.rules
+SecBuzzerESM/Suricata/suricata/rules

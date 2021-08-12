@@ -1,0 +1,81 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      releaseEnable:
+        default: 'false'
+
+jobs:
+  release:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    runs-on: [self-hosted, Linux, X64, dev]
+    steps:
+      - uses: AutoModality/action-clean@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Check Version
+        id: ver
+        run: |
+          if [ "`git merge origin/development | grep '^Already'`" ]; then
+            echo "Master Code Already up-to-date"
+          else
+            git status
+            git push
+          fi
+          newVer=`awk '$0 ~ /# V/{print $2}' SecBuzzerESM/HISTORY.md | awk 'NR==1'`
+          nowVer=`git describe --tags $(git rev-list --tags --max-count=1)`
+          echo "newVer=>$newVer, nowVer=>$nowVer"
+          if [ $newVer == $nowVer ]; then
+            echo Version Already up-to-date
+            echo "::set-output name=CHECK::false"
+            exit 0
+          fi
+          echo "::set-output name=CHECK::true"
+          echo "::set-output name=VERSION::"$newVer
+
+      - name: Clean System Docker Images
+        if: ${{ steps.ver.outputs.CHECK == 'true' }}
+        run: |
+          docker rmi -f $(docker images -q)
+
+      - name: Build Offline Install
+        if: ${{ steps.ver.outputs.CHECK == 'true' }}
+        run: | 
+          chmod +x SecBuzzerESM/prepare.sh
+          ./SecBuzzerESM/prepare.sh
+
+      - name: Packing
+        if: ${{ steps.ver.outputs.CHECK == 'true' }}
+        run: |
+          mkdir -p /Release/${{ steps.ver.outputs.VERSION }}/
+          tar zcvf SecBuzzerESM.tgz SecBuzzerESM
+          mv SecBuzzerESM.tgz /Release/${{ steps.ver.outputs.VERSION }}/SecBuzzerESM_${{ steps.ver.outputs.VERSION }}.tgz
+
+      - name: Release
+        if: ${{ github.event.inputs.releaseEnable == 'true' && steps.ver.outputs.CHECK == 'true' }}
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+        with:
+          tag_name: ${{ steps.ver.outputs.VERSION }}
+          release_name: ${{ steps.ver.outputs.VERSION }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+
+#      - name: Upload Release Asset
+#        if: ${{ github.event.inputs.releaseEnable == 'true' && steps.ver.outputs.CHECK == 'true' }}
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: /Release/${{ steps.ver.outputs.VERSION }}/SecBuzzerESM_${{ steps.ver.outputs.VERSION }}.tgz
+#          asset_name: SecBuzzerESM_${{ steps.ver.outputs.VERSION }}.tgz
+#          asset_content_type: application/gzip
