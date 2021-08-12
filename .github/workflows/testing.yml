@@ -1,14 +1,16 @@
 name: Testing
 on: 
-  workflow_dispatch:
-    inputs:
-      mergeToReleases:
-        default: 'false'
+  push
+# workflow_dispatch:
+#    inputs:
+#      mergeToReleases:
+#        default: 'false'
 
 jobs: 
   dev-job:
     name: Build ESM Test
-    runs-on: [self-hosted, Linux, X64, dev]
+#    runs-on: [self-hosted, Linux, X64, dev]
+    runs-on: [self-hostedu, buntu-18.04, X64]
     steps:
       - uses: AutoModality/action-clean@v1
       - uses: actions/checkout@v2
