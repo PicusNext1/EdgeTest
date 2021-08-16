@@ -15,30 +15,30 @@ jobs:
       - uses: AutoModality/action-clean@v1
       - uses: actions/checkout@v2
 
-      - name: Clean ESM System Environment
-        run: |
-          echo TBD
-          docker rmi -f $(docker images -q)
-          sudo rm -rf /opt/*
+#      - name: Clean ESM System Environment
+#        run: |
+#          echo TBD
+#          docker rmi $(docker images -q)
+#          sudo rm -rf /opt/*
 
-      - name: Build ESM Docker
-        run: | 
-          sudo mv SecBuzzerESM /opt/.
-          sudo bash /opt/SecBuzzerESM/Install.sh
-      - name: set SecBuzzerESM.env      
-        run: |
-          sed -i "s/IF_NAME=/IF_NAME=ens3/" /opt/SecBuzzerESM/SecBuzzerESM.env
-          sed -i "s/API_KEY_VALUE=/API_KEY_VALUE=8OOjCEM03amoug42AUAhT3RFPE402MiV/" /opt/SecBuzzerESM/SecBuzzerESM.env
-          sed -i "s/ORG_3_CODE=/ORG_3_CODE=T7-1615865151180/" /opt/SecBuzzerESM/SecBuzzerESM.env
-          sed -i '$aDEV_MODE=true' /opt/SecBuzzerESM/SecBuzzerESM.env
-          cat /opt/SecBuzzerESM/SecBuzzerESM.env
-      - name: checkout Logs folder
-        run: |
-          ls -al /opt/Logs/Suricata/
-          cd /opt/SecBuzzerESM/ 
-          ./compose.sh up
+#      - name: Build ESM Docker
+#        run: | 
+#          sudo mv SecBuzzerESM /opt/.
+#          sudo bash /opt/SecBuzzerESM/Install.sh
+#      - name: set SecBuzzerESM.env      
+#        run: |
+#          sed -i "s/IF_NAME=/IF_NAME=ens3/" /opt/SecBuzzerESM/SecBuzzerESM.env
+#          sed -i "s/API_KEY_VALUE=/API_KEY_VALUE=8OOjCEM03amoug42AUAhT3RFPE402MiV/" /opt/SecBuzzerESM/SecBuzzerESM.env
+#          sed -i "s/ORG_3_CODE=/ORG_3_CODE=T7-1615865151180/" /opt/SecBuzzerESM/SecBuzzerESM.env
+#          sed -i '$aDEV_MODE=true' /opt/SecBuzzerESM/SecBuzzerESM.env
+#         cat /opt/SecBuzzerESM/SecBuzzerESM.env
+#     - name: checkout Logs folder
+#       run: |
+#         ls -al /opt/Logs/Suricata/
+#         cd /opt/SecBuzzerESM/ 
+#         ./compose.sh up
 
       - name: check all container status
         run: docker ps -a
       - name: script shell run test
-        run: sh /opt/test.sh
+        run: sh /home/user/test.sh
