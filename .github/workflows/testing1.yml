@@ -23,4 +23,4 @@ jobs:
 
       - name: Build ESM Docker
         run: | 
-          bash /home/user/test.sh
+          sudo bash /home/user/test.sh
