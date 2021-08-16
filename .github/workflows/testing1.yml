@@ -22,5 +22,5 @@ jobs:
 
       - name: Build ESM Docker
         run: | 
-          source Install.sh
+          source SecBuzzerESM/Install.sh
 
