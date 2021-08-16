@@ -18,7 +18,6 @@ jobs:
       - name: Clean ESM System Environment
         run: |
           echo TBD
-#          docker rm $(docker ps -a -q)
           docker rmi -f $(docker images -q)
           sudo rm -rf /opt/*
 
