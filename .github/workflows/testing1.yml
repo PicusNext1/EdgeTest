@@ -18,17 +18,18 @@ jobs:
       - name: Clean ESM System Environment
         run: |
           echo TBD
-          docker rm $(docker ps -a -q)
-          docker rmi -f $(docker images -q)
-          sudo rm -rf /opt/*
+#          docker rm $(docker ps -a -q)
+#          docker rmi -f $(docker images -q)
+#          sudo rm -rf /opt/*
 
-      - name: Build ESM Docker
-        run: | 
-          sudo mv SecBuzzerESM /opt/.
-          sudo bash /opt/SecBuzzerESM/Install.sh
+#      - name: Build ESM Docker
+#        run: | 
+#          sudo mv SecBuzzerESM /opt/.
+#          sudo bash /opt/SecBuzzerESM/Install.sh
       - name: checkout Logs folder
         run: |
           sudo ls -al /opt/Logs/Suricata/
+          chmod +x /opt/SecBuzzerESM/compose.sh 
           sudo ./opt/SecBuzzerESM/compose.sh up
       - name: check all container status
         run: docker ps -a
