@@ -10,7 +10,7 @@ jobs:
   dev-job:
     name: Build ESM Test
 #    runs-on: [self-hosted, Linux, X64, dev]
-    runs-on: [self-hosted, ubuntu-18.04, X64]
+    runs-on: ubuntu-18.04
     steps:
       - uses: AutoModality/action-clean@v1
       - uses: actions/checkout@v2
