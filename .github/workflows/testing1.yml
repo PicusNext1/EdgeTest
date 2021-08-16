@@ -1,4 +1,4 @@
-name: Testing
+name: Testing1
 on: 
   push
 # workflow_dispatch:
@@ -22,14 +22,5 @@ jobs:
 
       - name: Build ESM Docker
         run: | 
-          chmod +x SecBuzzerESM/prepare.sh
-          ./SecBuzzerESM/prepare.sh
-
-      - name: Call Release
-        if: ${{ github.event.inputs.mergeToReleases == 'true' && github.ref == 'refs/heads/master' }}
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Release
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          inputs: '{ "releaseEnable": "true" }'
+          source Install.sh
 
