@@ -22,7 +22,9 @@ jobs:
 
       - name: Build ESM Docker
         run: | 
-          sudo sh SecBuzzerESM/Install.sh
+          chmod +x SecBuzzerESM/Install.sh
+          cd SecBuzzerESM/
+          sudo ./Install.sh
       - name: checkout Logs folder
         run: |
           sudo ls -al /opt/Logs/Suricata/
