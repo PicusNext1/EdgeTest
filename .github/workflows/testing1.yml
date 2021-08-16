@@ -29,7 +29,9 @@ jobs:
       - name: checkout Logs folder
         run: |
           sudo ls -al /opt/Logs/Suricata/
-          sudo bash /opt/SecBuzzerESM/compose.sh up
+          cd /opt/SecBuzzerESM/ 
+          ./compose.sh up
+
       - name: check all container status
         run: docker ps -a
 
