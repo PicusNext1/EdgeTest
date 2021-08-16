@@ -18,11 +18,9 @@ jobs:
       - name: Clean ESM System Environment
         run: |
           echo TBD
-          docker kill $(docker ps -q)
           docker rm $(docker ps -a -q)
           docker rmi -f $(docker images -q)
-          sudo rm -rf /opt/Logs
-          sudo rm -rf /opt/containerd
+          sudo rm -rf /opt/*
 
       - name: Build ESM Docker
         run: | 
